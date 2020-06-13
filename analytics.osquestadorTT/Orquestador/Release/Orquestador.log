@@ -1,0 +1,10 @@
+﻿  Orquestador.cpp
+  ProcesoBucle.cpp
+ProcesoBucle.cpp(107): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+  Generando código
+  9 of 494 functions ( 1.8%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    88 functions had inline decision re-evaluated but remain unchanged
+  Generación de código finalizada
+  Orquestador.vcxproj -> D:\Usuarios\mdbrenes\Documents\Proyectos\TT_Algoritmo\OrquestadorMultialgoritmo\Release\Orquestador.exe
+  Orquestador.vcxproj -> D:\Usuarios\mdbrenes\Documents\Proyectos\TT_Algoritmo\OrquestadorMultialgoritmo\Release\Orquestador.pdb (Full PDB)

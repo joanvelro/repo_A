@@ -1,0 +1,177 @@
+global:
+    project_name:           "01_horus_traffic_prediction"
+    project_scope:          'AUSOL'                                                                                # 'NORTE_LITORAL' | 'AUSOL'
+    execution_mode:         'offline'
+    reports_path:           'C:\Users\yhoz\Documents\dataanalytics.predictive\reports\'
+    logs_path:              'C:\Users\yhoz\Documents\dataanalytics.predictive\reports\'
+    fernet_tokens_path:     'C:\Users\yhoz\secrets'
+    input_data:             'C:\Users\yhoz\Documents\dataanalytics.predictive\data\TT_NL.csv'
+    output_path:            'C:\Users\yhoz\Documents\dataanalytics.predictive\output\results.csv'
+    minsait_program_path:   'C:\Users\yhoz\Documents\dataanalytics.predictive\data\'
+
+realtime_mode:
+    newdata_timeout:        190                                                                                          # timeout in seconds to exit program if it is reached. The timeout is measured since last new data received
+
+pipeline_execution:
+    generate_datasets:      False                                                                                       # True it will execute again the SQL queries and generate the datasets, False: It will retrieve from disk the datasets
+    restore_datasets:       False
+    descriptive_analysis:   False
+    train_algorithms:       False
+    make_predictions:       True
+    model_evaluation:       False
+    realtime_monitoring:    False
+
+generate_datasets:                                                                                                      # ONLY FOR VALIDATION: True it will execute again the SQL queries and generate the datasets, False: It will retrieve from disk the datasets
+    database:               'AUSOL'
+    init_date:              '2018-04-01 00:00:00'
+    end_date:               '2018-05-01 00:00:00'
+    datasets_path:          'C:\Users\yhoz\Documents\dataanalytics.predictive\data\'                                                           # Windows path to the dataset files
+    apply_quality_rules:    True
+    split_download:         'monthly'
+    dataset_year:           '2018'
+
+train_algorithms:
+    -  algorithm_name:       desc_ref
+       activated:            True
+       by_segment:           [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] # AUSOL :  [1,2,3,4,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,30,31,32,33,34,35,39,40,42,43,100,101,102,103,104,105,106,107]
+       hours_in_train:       600
+
+    -  algorithm_name:       arima                                                                                                                   # It fits a range of ARIMA models and automatically select the best
+       activated:            True
+       by_segment:           [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] # AUSOL :  [1,2,3,4,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,30,31,32,33,34,35,39,40,42,43,100,101,102,103,104,105,106,107]
+       hours_in_train:       600                                                                                                                # initial window train set. 120=24*5 -> 5 days in train. 96 rows is one day                                                                                                               # the incremental train update will add the incremental_train_update time window to the initial window train set for each prediction step                                                                                                         # sliding | accumulative
+
+    -  algorithm_name:       ets                                                                                                                     # It fits a collection of exponential smoothing models and select the best
+       activated:            True
+       by_segment:           [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] # AUSOL : [1,2,3,4,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,30,31,32,33,34,35,39,40,42,43,100,101,102,103,104,105,106,107]
+       hours_in_train:       600                                                                                                                # initial window train set. 120=24*5 -> 5 days in train. 96 rows is one day                                                                                                         # sliding | accumulative
+
+    -  algorithm_name:       snaive                                                                                                                  # A random walk model that makes constant prediction with weekly seasonality
+       activated:            False
+       by_segment:           [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] # AUSOL : [1,2,3,4,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,30,31,32,33,34,35,39,40,42,43,100,101,102,103,104,105,106,107]
+       hours_in_train:       600                                                                                                                # initial window train set. 120=24*5 -> 5 days in train. 96 rows is one day
+                                                                                                            # sliding | accumulative
+    -  algorithm_name:       tbats                                                                                                                   # TBATS model with both weekly and yearly seasonality
+       activated:            False
+       by_segment:           [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] # AUSOL : [1,2,3,4,7,8,9,10,11,12,13,14,15,16,18,19,21,22,30,31,32,33,40,42,43,100,101,102,103,104,105,106,107]
+       hours_in_train:       600                                                                                                                # initial window train set. 120=24*5 -> 5 days in train. 96 rows is one day
+                                                                                                            # the incremental train update will add the incremental_train_update time window to the initial window train set for each prediction step
+    -  algorithm_name:       fbprophet
+       activated:            True
+       by_segment:           [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] # AUSOL : [1,2,3,4,7,8,9,10,11,12,13,14,15,16,18,19,21,22,30,31,32,33,40,42,100,101,102,103,104,105,106,107]
+       hours_in_train:       600                                                                                                                # initial window train set. 120=24*5 -> 5 days in train. 96 rows is one day
+
+conitnuous_learning:
+    train_update:            False                                                                                                                # the incremental train update will add the incremental_train_update time window to the initial window train set for each prediction step
+    train_window:            'sliding'                                                                                                            # sliding | accumulative
+    hours_to_retrain:        100
+
+make_predictions:
+    -  algorithm_name:       minsait
+       activated:            False
+       by_segment:           [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] # AUSOL : [1,2,3,4,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,30,31,32,33,34,35,39,40,42,43,100,101,102,103,104,105,106,107]
+       hours_to_forecast:    100
+       incremental_forecast: False
+       code:                 ''
+
+    -  algorithm_name:       desc_ref           # este siempre debe estar activo
+       activated:            True
+       by_segment:           [1,2,3,4,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,30,31,32,33,34,35,39,40,42,43,100,101,102,103,104,105,106,107] # NORTE [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]  # AUSOL : [1,2,3,4,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,30,31,32,33,34,35,39,40,42,43,100,101,102,103,104,105,106,107]
+       hours_to_forecast:    100
+       incremental_forecast: False
+       code:                 ''
+
+    -  algorithm_name:       ets
+       activated:            False
+       by_segment:           [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] # AUSOL : [1,2,3,4,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,30,31,32,33,34,35,39,40,42,43,100,101,102,103,104,105,106,107]
+       hours_to_forecast:    100
+       incremental_forecast: False
+       code:                 ''
+
+    -  algorithm_name:       arima
+       activated:            False
+       by_segment:           [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] # AUSOL [1,2,3,4,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,30,31,32,33,34,35,39,40,42,43,100,101,102,103,104,105,106,107]
+       hours_to_forecast:    100
+       incremental_forecast: False
+       code:                 ''
+
+    -  algorithm_name:       snaive
+       activated:            False
+       by_segment:           [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] # AUSOL [1,2,3,4,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,30,31,32,33,34,35,39,40,42,43,100,101,102,103,104,105,106,107]
+       hours_to_forecast:    100
+       incremental_forecast: False
+       code:                 ''
+
+    -  algorithm_name:       tbats
+       activated:            False
+       by_segment:           [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] # AUSOL [1,2,3,4,7,8,9,10,11,12,13,14,15,16,18,19,21,22,30,31,32,33,40,42,43,100,101,102,103,104,105,106,107]
+       hours_to_forecast:    100
+       incremental_forecast: False
+       code:                 ''
+
+    -  algorithm_name:       fbprophet
+       activated:            False
+       by_segment:           [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]  #AUSOL [1,2,3,4,7,8,9,10,11,12,13,14,15,16,18,19,21,22,30,31,32,33,40,42,100,101,102,103,104,105,106,107] # NORTE [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+       hours_to_forecast:    100
+       incremental_forecast: False
+       code:                 ''
+
+    -  algorithm_name:       extra_trees_2a
+       activated:            False
+       by_segment:           [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]  #AUSOL [1,2,3,4,7,8,9,10,11,12,13,14,15,16,18,19,21,22,30,31,32,33,40,42,100,101,102,103,104,105,106,107] # NORTE [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+       hours_to_forecast:    100
+       incremental_forecast: False
+       code:                 '6m4c4v4g' # AUSOL: 6m4c1v4g
+
+    -  algorithm_name:       extra_trees_2
+       activated:            False
+       by_segment:           [1,2,3,4,7,8,9,10,11,12,13,14,15,16,18,19,21,22,30,31,32,33,40,42,100,101,102,103,104,105,106,107]   #AUSOL [1,2,3,4,7,8,9,10,11,12,13,14,15,16,18,19,21,22,30,31,32,33,40,42,100,101,102,103,104,105,106,107] # NORTE [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+       hours_to_forecast:    100
+       incremental_forecast: False
+       code:                 '6m4c1v4g' # NORTE '6m4c4v4g' # AUSOL: 6m4c1v4g
+
+    -  algorithm_name:       random_forest
+       activated:            False
+       by_segment:           [1,2,3,4,7,8,9,10,11,12,13,14,15,16,18,19,21,22,30,31,32,33,40,42,100,101,102,103,104,105,106,107]  #AUSOL [1,2,3,4,7,8,9,10,11,12,13,14,15,16,18,19,21,22,30,31,32,33,40,42,100,101,102,103,104,105,106,107] # NORTE [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+       hours_to_forecast:    100
+       incremental_forecast: False
+       code:                 '6m2c1v4g' # AUSOL: '6m2c1v4g' # NORTE LITORAL: 6m4c1v4g
+
+    -  algorithm_name:       mlp_neural_network
+       activated:            True
+       by_segment:           [1,2,3,4,7,8,9,10,11,12,13,14,15,16,18,19,21,22,30,31,32,33,40,42,100,101,102,103,104,105,106,107] #AUSOL [1,2,3,4,7,8,9,10,11,12,13,14,15,16,18,19,21,22,30,31,32,33,40,42,100,101,102,103,104,105,106,107] # NORTE [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+       hours_to_forecast:    100
+       incremental_forecast: False
+       code:                 '6m2c1v3g' # AUSOL: 6m4c1v3g
+
+    -  algorithm_name:       gradient_boosting
+       activated:            False
+       by_segment:           [1,2,3,4,7,8,9,10,11,12,13,14,15,16,18,19,21,22,30,31,32,33,40,42,100,101,102,103,104,105,106,107]  #AUSOL [1,2,3,4,7,8,9,10,11,12,13,14,15,16,18,19,21,22,30,31,32,33,40,42,100,101,102,103,104,105,106,107] # NORTE [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+       hours_to_forecast:    100
+       incremental_forecast: False
+       code:                 '6m4c1v4g' # NORTE LITORAL '6m2c1v4g' # AUSOL: 6m4c1v4g
+
+    -  algorithm_name:       kn_neighbors
+       activated:            False
+       by_segment:           [1,2,3,4,7,8,9,10,11,12,13,14,15,16,18,19,21,22,30,31,32,33,40,42,100,101,102,103,104,105,106,107]  #AUSOL [1,2,3,4,7,8,9,10,11,12,13,14,15,16,18,19,21,22,30,31,32,33,40,42,100,101,102,103,104,105,106,107] # NORTE [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+       hours_to_forecast:    100
+       incremental_forecast: False
+       code:                 '6m2c1v4g' # AUSOL: 6m4c1v4g
+
+model_evaluation:
+    evaluation_metrics:      True
+    operational_performance: True
+    realtime_monitoring:     True
+
+descriptive_analysis:
+    data_profiling:          True
+    acf_analysis:            True
+    pacf_analysis:           True
+
+smoothing_techniques:
+    signal_smoothing:        False
+    historical_avg:          False                                                                                                    # It will produce an averaged forecast
+    descriptive_avg:         False
+    fill_missing:            True                                                                                                    # this will fill the missing data point with the previous one (generate a repeated obs)
+    clean_outliers:          False
+

@@ -1,0 +1,9 @@
+data/*.csv
+output
+models
+*.pyc
+.idea
+venv
+notebooks/.ipynb*
+__pycache__*
+.pytest_cache/*

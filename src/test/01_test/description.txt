@@ -1,0 +1,4 @@
+TEST 1 - SE QUIERE COMPROBAR QUE LOS INPUTS Y OUTPUTS SON LOS QUE SE ESPERAN POR EL ORQUESTADOR Y SE GENERAN CORRECTAMENTE
+                1. Generar un input cada 15mint
+                2. Ejecutar programa MultiAlgoritmo "predictiveanalytics"
+                3. Ejecutar checker para comprobar que se ha generado output

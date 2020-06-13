@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="hdrs">
+      <UniqueIdentifier>{43aef2bb-87f3-4cdf-a6bb-9fd4a7362abb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{923a53b2-e4a8-4205-a6c8-524853d09970}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\hdrs\conexTrz.h">
+      <Filter>hdrs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\hdrs\TscFileHandle.h">
+      <Filter>hdrs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\hdrs\TscTrace.h">
+      <Filter>hdrs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\hdrs\TscTraceIm.h">
+      <Filter>hdrs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\hdrs\TscTraceUtil.h">
+      <Filter>hdrs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\hdrs\TscTrz_i.h">
+      <Filter>hdrs</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\conexTrz.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TscFileHandle.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TscTraceIm.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TscTraceUtil.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TscTrz_i.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

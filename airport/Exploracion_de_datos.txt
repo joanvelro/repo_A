@@ -1,0 +1,74 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%% EXPLORACION DE DATOS - AEROPUERTOS %%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+1.- ................. Data Quality y limpieza de datos .....................
+
+Fichero ABPC: (El flight list no lo he usado de momento, habra que usarlo en una segunda iteración y para las predicciones en tiempo real, puesto que necesitamos saber el numero total de pasajeros por vuelo)
+
+                          Al leer el fichero se añaden los campos EXTRA 1 y EXTRA 2 para recoger los posibles campos extras que haya por error
+                          Se filtra por pasajero STATUS: PASSED
+                          Se borran las filas que tengan los dos extras no nulos
+                          Las filas que tengan el EXTRA 1 no nulo y EXTRA 2 nulo se corrigen para que todos los campos cuadren (la causa suele ser que hay mas de un valor para el campo REASON)
+                          Codificamos la variable STATUS (Como hemos filtrado por PASSED, sera todo 0)
+
+2.- .................. Nuevos Campos, Analisis de variables relevantes ....................
+
+                          Añadimos el campo LOCAL que será True si el vuelo es nacional y False si es internacional (Usamos el diccionario de aeropuertos DIC_AIRP_Athenas y el codigo de aeropuerto de destino del ABPC)
+                          Transformamos las fechas de Check y Departure a datetime para restarlas y obtener DWELL TIME, a su vez las transformamos al formato string usado de fecha
+                          Añadimos los campos hora y dia de la semana del vuelo departure
+                          NOTA: Nos queda saber cuales pasajeros son de transito (cambio de vuelo) y cuales de no transito, lo estan mirando en aeropuertos..
+
+3.- ................... CLUSTER.......................
+
+                          Clusterizamos por horas (agrupadas en mañana, tarde, mediodia y otras horas no agrupables) , dia de la semana y vuelo local/int.
+                          NOTA: En el Notebook ABPC, en el apartado Cluster por horas del departure, hay algunas funciones que representan los datos en histogramas por horas individuales y agrupadas
+
+4.- ................. Curvas Patrones .....................
+
+                         Representamos el numero de pasajeros (en porcentaje) respecto al DWELL TIME
+                         Observamos las diferencias entre las curvas de distintos clusters
+                         Aqui podemos comprobar si hemos hecho bien la clusterización
+
+5.- ..................... Modelo a priori ..........................
+
+                        En el apartado Predictions del Notebook ABPC se crea un pequeño modelo (correspondiente a un cluster) y se sacan las predicciones
+                        PASOS:
+                                                           1- Filtrar el dataset por Hora/Cluster de hora, local/internacional, dia de la semana
+                                                           2- Partir el dataset en dos: test y training
+                                                           3- Representar histogramas de test y training y recoger los datos (nº de personas por dwell time)
+                                                           4- Pasar a porcentaje los datos de cuentas y volvemos a representar (observamos si distan mucho los conjuntos de test-training)
+                                                           5- Creamos el regresor (Random Forest, por ejemplo) con sus hiperparametros (en el Random Forest el numero de arboles)
+                                                           6- Predecimos con el test y observamos predicciones frente a real
+                                                           7- Sacamos metrica de performance: R^2
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CONTENIDO NOTEBOOKS %%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+En el notebook ABPC es donde he cargado el año completo de los ABPC y he hecho el estudio.
+
+He usado el notebook FlightList para examinar el fichero de los vuelos, por si podia sacar algo de ahi (en la primera iteracion no ha intervenido)
+
+El ABPC por meses lo he usado para cargar un mes solo (sirve para que no tarde tanto en ejecutarse las fases) y asi hacer las pruebas más rapido. 
+Luego todo lo definitivo se replica en el ABPC anual.
+
+El airport es un notebook borrador de las primeras exploraciones que hice
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DUDAS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Aun no he tocado los modelos de Sarimax y demas que teniamos en autopistas, pero se que hay parametros que tendre que ajustar (guiame "un petit peu")
+He probado con random forest, pero probare con mas cuando vuelva de vacaciones
+Una duda importante, es esta:
+
+Nosotros estudiamos el flujo de pasajeros por hora
+para ello hacemos el estudio de los pasajeros segun el tiempo con el que se anticipan al pasar por el control respecto a la salida del vuelo (dwell time = departure time - check time)
+Para sacar las curvas, en primer lugar simplemente hice un conteo de las personas que pasaban frente al dwell time.
+Luego me di cuenta de que no era justo cuando comparaba curvas, puesto que puede que para ciertos dias haya mas pasajeros que otros.
+Asi que lo hice en porcentajes. Segun el cluster que estudie, represento la curva de porcentaje de personas que pasan por el control respecto al dwell time (corresspondientes a un cluster).
+
+Querria saber tu opinion sobre esto ultimo, si tu harias otra cosa para escalar/normalizar los datos.
+
+

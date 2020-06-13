@@ -1,0 +1,51 @@
+﻿  TscTraceIm.cpp
+src\TscTraceIm.cpp(1267): error C2065: 'CFileStatus': identificador no declarado
+src\TscTraceIm.cpp(1267): error C2146: error de sintaxis: falta ';' delante del identificador 'status'
+src\TscTraceIm.cpp(1267): error C2065: 'status': identificador no declarado
+src\TscTraceIm.cpp(1268): error C2653: 'CFile': no es un nombre de clase o espacio de nombres
+src\TscTraceIm.cpp(1268): error C2065: 'status': identificador no declarado
+src\TscTraceIm.cpp(1268): error C3861: 'GetStatus': no se encontró el identificador
+src\TscTraceIm.cpp(1318): error C2065: 'CFileFind': identificador no declarado
+src\TscTraceIm.cpp(1318): error C2146: error de sintaxis: falta ';' delante del identificador 'fBusca'
+src\TscTraceIm.cpp(1318): error C2065: 'fBusca': identificador no declarado
+src\TscTraceIm.cpp(1319): error C2065: 'CTime': identificador no declarado
+src\TscTraceIm.cpp(1319): error C2146: error de sintaxis: falta ';' delante del identificador 'tFechaEjecutable'
+src\TscTraceIm.cpp(1319): error C2065: 'tFechaEjecutable': identificador no declarado
+src\TscTraceIm.cpp(1321): error C2065: 'fBusca': identificador no declarado
+src\TscTraceIm.cpp(1321): error C2228: el operando izquierdo de '.FindFile' debe tener class/struct/union
+  src\TscTraceIm.cpp(1321): note: el tipo es 'unknown-type'
+src\TscTraceIm.cpp(1324): error C2065: 'fBusca': identificador no declarado
+src\TscTraceIm.cpp(1324): error C2228: el operando izquierdo de '.FindNextFileA' debe tener class/struct/union
+  src\TscTraceIm.cpp(1324): note: el tipo es 'unknown-type'
+src\TscTraceIm.cpp(1325): error C2065: 'fBusca': identificador no declarado
+src\TscTraceIm.cpp(1325): error C2228: el operando izquierdo de '.GetCreationTime' debe tener class/struct/union
+  src\TscTraceIm.cpp(1325): note: el tipo es 'unknown-type'
+src\TscTraceIm.cpp(1325): error C2065: 'tFechaEjecutable': identificador no declarado
+src\TscTraceIm.cpp(1328): error C2065: 'tFechaEjecutable': identificador no declarado
+src\TscTraceIm.cpp(1328): error C2228: el operando izquierdo de '.Format' debe tener class/struct/union
+  src\TscTraceIm.cpp(1328): note: el tipo es 'unknown-type'
+src\TscTraceIm.cpp(1327): warning C4473: "sprintf_s": no se pasaron suficientes argumentos para la cadena de formato
+  src\TscTraceIm.cpp(1327): note: los marcadores de posición y sus parámetros esperan 1 argumentos variádicos, pero se proporcionaron 0
+  src\TscTraceIm.cpp(1327): note: el argumento variádico 1 que falta es requerido por la cadena de formato '%s'
+src\TscTraceIm.cpp(1378): error C2065: 'CFileFind': identificador no declarado
+src\TscTraceIm.cpp(1378): error C2146: error de sintaxis: falta ';' delante del identificador 'fBusca'
+src\TscTraceIm.cpp(1378): error C2065: 'fBusca': identificador no declarado
+src\TscTraceIm.cpp(1379): error C2065: 'CTime': identificador no declarado
+src\TscTraceIm.cpp(1379): error C2146: error de sintaxis: falta ';' delante del identificador 'tFechaEjecutable'
+src\TscTraceIm.cpp(1379): error C2065: 'tFechaEjecutable': identificador no declarado
+src\TscTraceIm.cpp(1380): error C2065: 'fBusca': identificador no declarado
+src\TscTraceIm.cpp(1380): error C2228: el operando izquierdo de '.FindFile' debe tener class/struct/union
+  src\TscTraceIm.cpp(1380): note: el tipo es 'unknown-type'
+src\TscTraceIm.cpp(1383): error C2065: 'fBusca': identificador no declarado
+src\TscTraceIm.cpp(1383): error C2228: el operando izquierdo de '.FindNextFileA' debe tener class/struct/union
+  src\TscTraceIm.cpp(1383): note: el tipo es 'unknown-type'
+src\TscTraceIm.cpp(1384): error C2065: 'fBusca': identificador no declarado
+src\TscTraceIm.cpp(1384): error C2228: el operando izquierdo de '.GetLastWriteTime' debe tener class/struct/union
+  src\TscTraceIm.cpp(1384): note: el tipo es 'unknown-type'
+src\TscTraceIm.cpp(1384): error C2065: 'tFechaEjecutable': identificador no declarado
+src\TscTraceIm.cpp(1388): error C2065: 'tFechaEjecutable': identificador no declarado
+src\TscTraceIm.cpp(1388): error C2228: el operando izquierdo de '.Format' debe tener class/struct/union
+  src\TscTraceIm.cpp(1388): note: el tipo es 'unknown-type'
+src\TscTraceIm.cpp(1387): warning C4473: "sprintf_s": no se pasaron suficientes argumentos para la cadena de formato
+  src\TscTraceIm.cpp(1387): note: los marcadores de posición y sus parámetros esperan 1 argumentos variádicos, pero se proporcionaron 0
+  src\TscTraceIm.cpp(1387): note: el argumento variádico 1 que falta es requerido por la cadena de formato '%s'
